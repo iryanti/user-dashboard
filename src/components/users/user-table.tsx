@@ -10,17 +10,35 @@ type Props = {
 
 export default function UserTable({ users, search }: Props) {
   const router = useRouter();
-  return (
+return (
+  <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
     <div className="overflow-x-auto">
-      <table className="min-w-full border border-gray-200">
-        <thead>
-          <tr className="bg-gray-100 text-left">
-            <th className="p-3">Name</th>
-            <th className="p-3">Email</th>
-            <th className="p-3">Website</th>
-            <th className="p-3">Posts</th>
-            <th className="p-3">Completed</th>
-            <th className="p-3">Pending</th>
+      <table className="min-w-full">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+              Name
+            </th>
+
+            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+              Email
+            </th>
+
+            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+              Website
+            </th>
+
+            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+              Posts
+            </th>
+
+            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+              Completed
+            </th>
+
+            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+              Pending
+            </th>
           </tr>
         </thead>
 
@@ -28,25 +46,49 @@ export default function UserTable({ users, search }: Props) {
           {users.map((user) => (
             <tr
               key={user.id}
-              className="cursor-pointer border-t hover:bg-gray-50"
               onClick={() =>
                 router.push(
                   search
                     ? `/users/${user.id}?search=${search}`
-                    : `/users/${user.id}`
+                    : `/users/${user.id}`,
                 )
               }
+              className="cursor-pointer border-t border-gray-100 transition hover:bg-gray-50"
             >
-              <td className="p-3">{user.name}</td>
-              <td className="p-3">{user.email}</td>
-              <td className="p-3">{user.website}</td>
-              <td className="p-3">{user.totalPosts}</td>
-              <td className="p-3">{user.completedCount}</td>
-              <td className="p-3">{user.pendingTodos}</td>
+              <td className="px-6 py-4 font-medium text-gray-900">
+                {user.name}
+              </td>
+
+              <td className="px-6 py-4 text-gray-600">
+                {user.email}
+              </td>
+
+              <td className="px-6 py-4 text-gray-600">
+                {user.website}
+              </td>
+
+              <td className="px-6 py-4">
+                <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+                  {user.totalPosts}
+                </span>
+              </td>
+
+              <td className="px-6 py-4">
+                <span className="rounded-full bg-green-50 px-3 py-1 text-sm font-medium text-green-700">
+                  {user.completedCount}
+                </span>
+              </td>
+
+              <td className="px-6 py-4">
+                <span className="rounded-full bg-orange-50 px-3 py-1 text-sm font-medium text-orange-700">
+                  {user.pendingTodos}
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
+  </div>
+);
 }

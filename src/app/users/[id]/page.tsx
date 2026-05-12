@@ -6,6 +6,9 @@ import {
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import PostList from "@/components/users/post-list";
+import TaskList from "@/components/users/task-list";
+import UserOverviewCard from "@/components/users/user-overview-card";
 
 export async function generateMetadata({
   params,
@@ -45,54 +48,50 @@ export default async function UserDetailPage({
     notFound();
   }
 
-  const [posts, todos] = await Promise.all([
-    getPostsByUser(id),
-    getTodosByUser(id),
-  ]);
+  const todos = await getTodosByUser(id);
+
+  const completedTasks = todos.filter((todo) => todo.completed).length;
+
+  const pendingTasks = todos.length - completedTasks;
 
   return (
-    <main className="space-y-4 p-6">
+    <main className="mx-auto max-w-6xl space-y-8 p-6">
       <Link
         href={search ? `/users?search=${search}` : "/users"}
-        className="text-sm text-blue-600 hover:underline"
+        className="inline-flex text-sm font-medium text-gray-500 transition hover:text-gray-900"
       >
-        ← Back to users
+        ← Back
       </Link>
-      <h1 className="text-2xl font-bold">{user.name}</h1>
 
-      <p>Email: {user.email}</p>
+      <UserOverviewCard
+        name={user.name}
+        email={user.email}
+        company={user.company.name}
+        completedTasks={completedTasks}
+        pendingTasks={pendingTasks}
+      />
 
-      <p>Phone: {user.phone}</p>
+      <section className="flex flex-col gap-6 xl:flex-row">
+        <div className="min-w-0 flex-1 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 xl:min-h-[600px]">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">Recent Posts</h2>
+          </div>
 
-      <p>Website: {user.website}</p>
+          <PostList userId={id} />
+        </div>
 
-      <p>Company: {user.company.name}</p>
+        <div className="min-w-0 flex-1 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-gray-100 xl:min-h-[600px]">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">Tasks</h2>
 
-      <div>
-        <h2 className="mb-2 text-xl font-bold">Posts</h2>
-        <ul className="space-y-2">
-          {posts.map((post) => (
-            <li key={post.id} className="rounded border p-3">
-              <p className="font-medium">{post.title}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+            <span className="rounded-full bg-gray-100 px-3 py-1 text-sm font-medium text-gray-600">
+              {todos.length}
+            </span>
+          </div>
 
-      <div>
-        <h2 className="mb-2 text-xl font-bold">Tasks</h2>
-        <ul className="space-y-2">
-          {todos.map((todo) => (
-            <li key={todo.id} className="rounded border p-3">
-              <p>{todo.title}</p>
-
-              <p className="text-sm text-gray-500">
-                {todo.completed ? "Completed" : "Pending"}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </div>
+          <TaskList todos={todos} />
+        </div>
+      </section>
     </main>
   );
 }

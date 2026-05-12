@@ -92,8 +92,16 @@ export default function UsersList() {
   }
 
   return (
-    <div>
-      <div className="mb-4 flex gap-4">
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Users Dashboard</h1>
+
+        <p className="mt-1 text-sm text-gray-500">
+          Monitor user activity, posts, and tasks.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-4 sm:flex-row">
         <input
           type="text"
           placeholder="Search users..."
@@ -103,14 +111,16 @@ export default function UsersList() {
 
             router.push(`/users?search=${value}`);
           }}
-          className="w-full rounded border px-3 py-2"
+          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none transition focus:border-gray-400"
         />
+
         <select
           value={sortBy}
           onChange={(event) => setSortBy(event.target.value)}
-          className="rounded border px-3 py-2"
+          className="rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none transition focus:border-gray-400"
         >
           <option value="name">Sort by Name</option>
+
           <option value="posts">Sort by Posts</option>
         </select>
       </div>

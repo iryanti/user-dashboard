@@ -12,11 +12,9 @@ export async function getUsers(): Promise<User[]> {
   return response.json();
 }
 
-export async function getUserById(
-  id: string,
-): Promise<User | null> {
+export async function getUserById(id: string): Promise<User | null> {
   const response = await fetch(
-    `https://jsonplaceholder.typicode.com/users/${id}`,
+    `https://jsonplaceholder.typicode.com/users/${id}`
   );
 
   if (!response.ok) {
@@ -51,11 +49,14 @@ export async function getTodos(): Promise<Todo[]> {
   return response.json();
 }
 
-export async function getPostsByUser(userId: string): Promise<Post[]> {
+export async function getPostsByUser(
+  userId: string,
+  page = 1,
+  limit = 5
+): Promise<Post[]> {
   const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
+    `https://jsonplaceholder.typicode.com/posts?userId=${userId}&_page=${page}&_limit=${limit}`
   );
-
   if (!response.ok) {
     throw new Error("Failed to fetch posts");
   }
