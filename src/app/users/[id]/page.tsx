@@ -5,6 +5,7 @@ import {
 } from "@/services/user-services";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -14,6 +15,12 @@ export async function generateMetadata({
   const { id } = await params;
 
   const user = await getUserById(id);
+
+  if (!user) {
+    return {
+      title: "User Not Found",
+    };
+  }
 
   return {
     title: `${user.name} | User Detail`,
@@ -32,8 +39,13 @@ export default async function UserDetailPage({
   const { id } = await params;
   const { search } = await searchParams;
 
-  const [user, posts, todos] = await Promise.all([
-    getUserById(id),
+  const user = await getUserById(id);
+
+  if (!user) {
+    notFound();
+  }
+
+  const [posts, todos] = await Promise.all([
     getPostsByUser(id),
     getTodosByUser(id),
   ]);

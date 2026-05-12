@@ -1,14 +1,12 @@
-import { User } from '@/types/user';
-import { Post } from '@/types/post';
-import { Todo }  from '@/types/todo';
+import { User } from "@/types/user";
+import { Post } from "@/types/post";
+import { Todo } from "@/types/todo";
 
 export async function getUsers(): Promise<User[]> {
-  const response = await fetch(
-    'https://jsonplaceholder.typicode.com/users',
-  );
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
 
   if (!response.ok) {
-    throw new Error('Failed to fetch users');
+    throw new Error("Failed to fetch users");
   }
 
   return response.json();
@@ -16,72 +14,62 @@ export async function getUsers(): Promise<User[]> {
 
 export async function getUserById(
   id: string,
-): Promise<User> {
+): Promise<User | null> {
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/users/${id}`,
   );
 
   if (!response.ok) {
-    throw new Error('Failed to fetch user');
+    return null;
   }
 
-  return response.json();
+  const user = await response.json();
+
+  if (!user.id) {
+    return null;
+  }
+
+  return user;
 }
-
-
 export async function getPosts(): Promise<Post[]> {
-  const response = await fetch(
-    'https://jsonplaceholder.typicode.com/posts',
-  );
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
 
   if (!response.ok) {
-    throw new Error('Failed to fetch posts');
+    throw new Error("Failed to fetch posts");
   }
 
   return response.json();
 }
-
 
 export async function getTodos(): Promise<Todo[]> {
-  const response = await fetch(
-    'https://jsonplaceholder.typicode.com/todos',
-  );
+  const response = await fetch("https://jsonplaceholder.typicode.com/todos");
 
   if (!response.ok) {
-    throw new Error('Failed to fetch posts');
+    throw new Error("Failed to fetch posts");
   }
 
   return response.json();
 }
 
-
-export async function getPostsByUser(
-  userId: string,
-): Promise<Post[]> {
+export async function getPostsByUser(userId: string): Promise<Post[]> {
   const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts?userId=${userId}`,
+    `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
   );
 
   if (!response.ok) {
-    throw new Error(
-      "Failed to fetch posts",
-    );
+    throw new Error("Failed to fetch posts");
   }
 
   return response.json();
 }
 
-export async function getTodosByUser(
-  userId: string,
-): Promise<Todo[]> {
+export async function getTodosByUser(userId: string): Promise<Todo[]> {
   const response = await fetch(
-    `https://jsonplaceholder.typicode.com/todos?userId=${userId}`,
+    `https://jsonplaceholder.typicode.com/todos?userId=${userId}`
   );
 
   if (!response.ok) {
-    throw new Error(
-      "Failed to fetch todos",
-    );
+    throw new Error("Failed to fetch todos");
   }
 
   return response.json();
