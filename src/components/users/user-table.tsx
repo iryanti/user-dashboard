@@ -1,10 +1,10 @@
 "use client";
 
-import { User } from "@/types/user";
+import { UserWithStats } from "@/types/user";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  users: User[];
+  users: UserWithStats[];
 };
 
 export default function UserTable({ users }: Props) {
@@ -17,6 +17,9 @@ export default function UserTable({ users }: Props) {
             <th className="p-3">Name</th>
             <th className="p-3">Email</th>
             <th className="p-3">Website</th>
+            <th className="p-3">Posts</th>
+            <th className="p-3">Completed</th>
+            <th className="p-3">Pending</th>
           </tr>
         </thead>
 
@@ -30,6 +33,9 @@ export default function UserTable({ users }: Props) {
               <td className="p-3">{user.name}</td>
               <td className="p-3">{user.email}</td>
               <td className="p-3">{user.website}</td>
+              <td className="p-3">{user.totalPosts}</td>
+              <td className="p-3">{user.completedCount}</td>
+              <td className="p-3">{user.pendingTodos}</td>
             </tr>
           ))}
         </tbody>

@@ -1,10 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getUsers } from "@/services/user-services";
+import { getUsers, getPosts, getTodos } from "@/services/user-services";
 import UserTable from "./user-table";
+import { useState, useMemo } from "react";
+import { UserWithStats } from "@/types/user";
 
 export default function UsersList() {
+  const [search, setSearch] = useState("");
+
   const {
     data: users,
     isLoading,
@@ -14,17 +18,72 @@ export default function UsersList() {
     queryFn: getUsers,
   });
 
-  if (isLoading) {
-    return <p>Loading users...</p>;
+  const {
+    data: posts,
+    isLoading: isPostsLoading,
+    isError: isPostsError,
+  } = useQuery({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+  });
+
+  const {
+    data: todos,
+    isLoading: isTodosLoading,
+    isError: isTodosError,
+  } = useQuery({
+    queryKey: ["todos"],
+    queryFn: getTodos,
+  });
+
+  const usersWithStats = useMemo<UserWithStats[]>(() => {
+    if (!users || !posts || !todos) {
+      return [];
+    }
+
+    return users.map((user) => {
+      const postsByUser = posts.filter((post) => post.userId === user.id);
+      const todosByUser = todos.filter((todo) => todo.userId === user.id);
+      const completedCount = todosByUser.filter((todo) => todo.completed).length;
+
+      return {
+        ...user,
+        totalPosts: postsByUser.length,
+        completedCount,
+        pendingTodos: todosByUser.length - completedCount,
+      };
+    });
+  }, [users, posts, todos]);
+
+  const filteredUsers = usersWithStats.filter((user) => {
+    const keyword = search.toLowerCase();
+
+    return (
+      user.name.toLowerCase().includes(keyword) ||
+      user.email.toLowerCase().includes(keyword)
+    );
+  });
+
+  if (isLoading || isPostsLoading || isTodosLoading) {
+    return <p>Loading...</p>;
   }
 
-  if (isError) {
-    return <p>Failed to load users.</p>;
+  if (isError || isPostsError || isTodosError) {
+    return <p>Failed to load data.</p>;
   }
 
   return (
     <div>
-      <UserTable users={users ?? []} />
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search users..."
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          className="w-full rounded border px-3 py-2"
+        />
+      </div>
+      <UserTable users={filteredUsers} />
     </div>
   );
 }

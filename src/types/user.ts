@@ -18,3 +18,9 @@ export type User = {
     catchPhrase: string;
   };
 };
+
+export type UserWithStats = User & {
+  totalPosts: number;
+  completedCount: number;
+  pendingTodos: number;
+};
