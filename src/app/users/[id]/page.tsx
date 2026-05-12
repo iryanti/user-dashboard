@@ -1,5 +1,4 @@
 import {
-  getPostsByUser,
   getTodosByUser,
   getUserById,
 } from "@/services/user-services";

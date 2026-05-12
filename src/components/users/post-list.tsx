@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -26,12 +26,6 @@ export default function PostList({ userId }: Props) {
 
   const hasNextPage = posts?.length === POSTS_LIMIT;
 
-  useEffect(() => {
-    if (posts?.length === 0 && page > 1) {
-      setPage((prev) => prev - 1);
-    }
-  }, [posts, page]);
-
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -52,14 +46,20 @@ export default function PostList({ userId }: Props) {
   return (
     <div className="space-y-4">
       <div className="space-y-3">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100"
-          >
-            <p className="font-medium text-gray-900">{post.title}</p>
+        {posts.length === 0 ? (
+          <div className="flex h-40 items-center justify-center rounded-2xl bg-gray-50">
+            <p className="text-gray-500">No posts found.</p>
           </div>
-        ))}
+        ) : (
+          posts.map((post) => (
+            <div
+              key={post.id}
+              className="rounded-2xl bg-gray-50 p-4 transition hover:bg-gray-100"
+            >
+              <p className="font-medium text-gray-900">{post.title}</p>
+            </div>
+          ))
+        )}
       </div>
 
       <div className="flex items-center justify-between">

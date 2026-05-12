@@ -1,8 +1,9 @@
 import UsersList from "@/components/users/users-list";
+import { Suspense } from "react";
 export default function UsersPage() {
-    return (
-        <main className="p-6">
-            <UsersList />
-        </main>
-    );
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <UsersList />
+    </Suspense>
+  );
 }

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-
+import { useQuery } from "@tanstack/react-query";
 import UsersList from "./users-list";
 import userEvent from "@testing-library/user-event";
 
@@ -17,7 +17,7 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
-const mockedUseQuery = require("@tanstack/react-query").useQuery;
+const mockedUseQuery = useQuery as jest.Mock;
 
 describe("UsersList", () => {
   it("renders loading state", () => {
