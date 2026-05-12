@@ -1,6 +1,10 @@
-import { getUserById } from "@/services/user-services";
+import {
+  getPostsByUser,
+  getTodosByUser,
+  getUserById,
+} from "@/services/user-services";
 import Link from "next/link";
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 export async function generateMetadata({
   params,
@@ -16,7 +20,6 @@ export async function generateMetadata({
   };
 }
 
-
 export default async function UserDetailPage({
   params,
 }: {
@@ -24,7 +27,11 @@ export default async function UserDetailPage({
 }) {
   const { id } = await params;
 
-  const user = await getUserById(id);
+  const [user, posts, todos] = await Promise.all([
+    getUserById(id),
+    getPostsByUser(id),
+    getTodosByUser(id),
+  ]);
 
   return (
     <main className="space-y-4 p-6">
@@ -40,6 +47,32 @@ export default async function UserDetailPage({
       <p>Website: {user.website}</p>
 
       <p>Company: {user.company.name}</p>
+
+      <div>
+        <h2 className="mb-2 text-xl font-bold">Posts</h2>
+        <ul className="space-y-2">
+          {posts.map((post) => (
+            <li key={post.id} className="rounded border p-3">
+              <p className="font-medium">{post.title}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h2 className="mb-2 text-xl font-bold">Tasks</h2>
+        <ul className="space-y-2">
+          {todos.map((todo) => (
+            <li key={todo.id} className="rounded border p-3">
+              <p>{todo.title}</p>
+
+              <p className="text-sm text-gray-500">
+                {todo.completed ? "Completed" : "Pending"}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </main>
   );
 }

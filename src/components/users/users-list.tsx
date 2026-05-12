@@ -8,6 +8,7 @@ import { UserWithStats } from "@/types/user";
 
 export default function UsersList() {
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("name");
 
   const {
     data: users,
@@ -44,7 +45,9 @@ export default function UsersList() {
     return users.map((user) => {
       const postsByUser = posts.filter((post) => post.userId === user.id);
       const todosByUser = todos.filter((todo) => todo.userId === user.id);
-      const completedCount = todosByUser.filter((todo) => todo.completed).length;
+      const completedCount = todosByUser.filter(
+        (todo) => todo.completed
+      ).length;
 
       return {
         ...user,
@@ -55,14 +58,22 @@ export default function UsersList() {
     });
   }, [users, posts, todos]);
 
-  const filteredUsers = usersWithStats.filter((user) => {
-    const keyword = search.toLowerCase();
+  const filteredUsers = usersWithStats
+    .filter((user) => {
+      const keyword = search.toLowerCase();
 
-    return (
-      user.name.toLowerCase().includes(keyword) ||
-      user.email.toLowerCase().includes(keyword)
-    );
-  });
+      return (
+        user.name.toLowerCase().includes(keyword) ||
+        user.email.toLowerCase().includes(keyword)
+      );
+    })
+    .sort((a, b) => {
+      if (sortBy === "posts") {
+        return b.totalPosts - a.totalPosts;
+      }
+
+      return a.name.localeCompare(b.name);
+    });
 
   if (isLoading || isPostsLoading || isTodosLoading) {
     return <p>Loading...</p>;
@@ -74,7 +85,7 @@ export default function UsersList() {
 
   return (
     <div>
-      <div className="mb-4">
+      <div className="mb-4 flex gap-4">
         <input
           type="text"
           placeholder="Search users..."
@@ -82,7 +93,16 @@ export default function UsersList() {
           onChange={(event) => setSearch(event.target.value)}
           className="w-full rounded border px-3 py-2"
         />
+        <select
+          value={sortBy}
+          onChange={(event) => setSortBy(event.target.value)}
+          className="rounded border px-3 py-2"
+        >
+          <option value="name">Sort by Name</option>
+          <option value="posts">Sort by Posts</option>
+        </select>
       </div>
+
       <UserTable users={filteredUsers} />
     </div>
   );
