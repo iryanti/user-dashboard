@@ -86,11 +86,7 @@ export default function UsersList() {
   if (isError || isPostsError || isTodosError) {
     return <p>Failed to load data.</p>;
   }
-
-  if (!filteredUsers.length) {
-    return <p>No users found.</p>;
-  }
-
+  
   return (
     <div className="space-y-6">
       <div>
@@ -109,7 +105,7 @@ export default function UsersList() {
           onChange={(event) => {
             const value = event.target.value;
 
-            router.push(`/users?search=${value}`);
+            router.push(`/?search=${value}`);
           }}
           className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none transition focus:border-gray-400"
         />

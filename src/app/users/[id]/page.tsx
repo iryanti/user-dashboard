@@ -57,7 +57,7 @@ export default async function UserDetailPage({
   return (
     <main className="mx-auto max-w-6xl space-y-8 p-6">
       <Link
-        href={search ? `/users?search=${search}` : "/users"}
+        href={search ? `/?search=${search}` : "/"}
         className="inline-flex text-sm font-medium text-gray-500 transition hover:text-gray-900"
       >
         ← Back
