@@ -6,6 +6,7 @@ import UserTable from "./user-table";
 import { useState, useMemo } from "react";
 import { UserWithStats } from "@/types/user";
 import { useSearchParams, useRouter } from "next/navigation";
+import UsersTableSkeleton from "./users-table-skeleton";
 
 export default function UsersList() {
   const searchParams = useSearchParams();
@@ -86,8 +87,9 @@ export default function UsersList() {
 
       return a.name.localeCompare(b.name);
     });
+
   if (isLoading || isPostsLoading || isTodosLoading) {
-    return <p>Loading...</p>;
+    return <UsersTableSkeleton />;
   }
 
   if (isError || isPostsError || isTodosError) {
