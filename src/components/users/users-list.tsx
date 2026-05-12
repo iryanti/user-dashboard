@@ -87,6 +87,10 @@ export default function UsersList() {
     return <p>Failed to load data.</p>;
   }
 
+  if (!filteredUsers.length) {
+    return <p>No users found.</p>;
+  }
+
   return (
     <div>
       <div className="mb-4 flex gap-4">
