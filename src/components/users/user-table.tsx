@@ -49,7 +49,15 @@ export default function UserTable({ users, search }: Props) {
                   colSpan={6}
                   className="px-6 py-10 text-center text-gray-500"
                 >
-                  No users found.
+                  <div className="py-10 text-center">
+                    <p className="text-lg font-medium text-gray-700">
+                      No users found
+                    </p>
+
+                    <p className="mt-1 text-sm text-gray-500">
+                      Try searching with another keyword.
+                    </p>
+                  </div>
                 </td>
               </tr>
             ) : (

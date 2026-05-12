@@ -76,9 +76,16 @@ export default function UsersList() {
         return b.totalPosts - a.totalPosts;
       }
 
+      if (sortBy === "completed") {
+        return b.completedCount - a.completedCount;
+      }
+
+      if (sortBy === "pending") {
+        return b.pendingTodos - a.pendingTodos;
+      }
+
       return a.name.localeCompare(b.name);
     });
-
   if (isLoading || isPostsLoading || isTodosLoading) {
     return <p>Loading...</p>;
   }
@@ -86,7 +93,7 @@ export default function UsersList() {
   if (isError || isPostsError || isTodosError) {
     return <p>Failed to load data.</p>;
   }
-  
+
   return (
     <div className="space-y-6">
       <div>
@@ -116,8 +123,9 @@ export default function UsersList() {
           className="rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none transition focus:border-gray-400"
         >
           <option value="name">Sort by Name</option>
-
           <option value="posts">Sort by Posts</option>
+          <option value="completed">Sort by Completed</option>
+          <option value="pending">Sort by Pending</option>
         </select>
       </div>
 

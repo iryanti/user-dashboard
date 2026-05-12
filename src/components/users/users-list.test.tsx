@@ -41,7 +41,7 @@ describe("UsersList", () => {
 
     render(<UsersList />);
 
-    expect(screen.getByText("No users found.")).toBeInTheDocument();
+    expect(screen.getByText("No users found")).toBeInTheDocument();
   });
 
   it("filters users by search", async () => {
