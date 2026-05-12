@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 
 type Props = {
   users: UserWithStats[];
+  search: string;
 };
 
-export default function UserTable({ users }: Props) {
+export default function UserTable({ users, search }: Props) {
   const router = useRouter();
   return (
     <div className="overflow-x-auto">
@@ -28,7 +29,13 @@ export default function UserTable({ users }: Props) {
             <tr
               key={user.id}
               className="cursor-pointer border-t hover:bg-gray-50"
-              onClick={() => router.push(`/users/${user.id}`)}
+              onClick={() =>
+                router.push(
+                  search
+                    ? `/users/${user.id}?search=${search}`
+                    : `/users/${user.id}`
+                )
+              }
             >
               <td className="p-3">{user.name}</td>
               <td className="p-3">{user.email}</td>

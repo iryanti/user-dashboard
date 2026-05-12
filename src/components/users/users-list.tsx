@@ -5,9 +5,13 @@ import { getUsers, getPosts, getTodos } from "@/services/user-services";
 import UserTable from "./user-table";
 import { useState, useMemo } from "react";
 import { UserWithStats } from "@/types/user";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function UsersList() {
-  const [search, setSearch] = useState("");
+  const searchParams = useSearchParams();
+
+  const router = useRouter();
+  const search = searchParams.get("search") ?? "";
   const [sortBy, setSortBy] = useState("name");
 
   const {
@@ -90,7 +94,11 @@ export default function UsersList() {
           type="text"
           placeholder="Search users..."
           value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={(event) => {
+            const value = event.target.value;
+
+            router.push(`/users?search=${value}`);
+          }}
           className="w-full rounded border px-3 py-2"
         />
         <select
@@ -103,7 +111,7 @@ export default function UsersList() {
         </select>
       </div>
 
-      <UserTable users={filteredUsers} />
+      <UserTable users={filteredUsers} search={search} />
     </div>
   );
 }

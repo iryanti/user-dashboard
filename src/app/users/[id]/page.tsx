@@ -22,10 +22,15 @@ export async function generateMetadata({
 
 export default async function UserDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{
+    search?: string;
+  }>;
 }) {
   const { id } = await params;
+  const { search } = await searchParams;
 
   const [user, posts, todos] = await Promise.all([
     getUserById(id),
@@ -35,7 +40,10 @@ export default async function UserDetailPage({
 
   return (
     <main className="space-y-4 p-6">
-      <Link href="/users" className="text-sm text-blue-600 hover:underline">
+      <Link
+        href={search ? `/users?search=${search}` : "/users"}
+        className="text-sm text-blue-600 hover:underline"
+      >
         ← Back to users
       </Link>
       <h1 className="text-2xl font-bold">{user.name}</h1>
