@@ -1,7 +1,17 @@
 type Props = {
   name: string;
   email: string;
-  company: string;
+  username: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+  };
+  company: {
+    name: string;
+    catchPhrase: string;
+  };
   completedTasks: number;
   pendingTasks: number;
 };
@@ -9,6 +19,8 @@ type Props = {
 export default function UserOverviewCard({
   name,
   email,
+  username,
+  address,
   company,
   completedTasks,
   pendingTasks,
@@ -21,36 +33,38 @@ export default function UserOverviewCard({
             {name.charAt(0)}
           </div>
 
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              {name}
-            </h1>
+          <div className="space-y-1">
+            <h1 className="text-3xl font-bold text-gray-900">{name}</h1>
 
-            <p className="mt-1 text-sm text-gray-500">
-              {email}
+            <p className="mt-1 text-sm text-gray-500">{email}</p>
+
+            <p>
+              <span className="font-medium">Username:</span> {username}
             </p>
 
-            <p className="mt-2 text-sm text-gray-400">
-              {company}
+            <p className="mt-2 text-sm text-gray-400">{company.name}</p>
+
+            <p>
+              <span className="font-medium">Catchphrase:</span>{" "}
+              {company.catchPhrase}
+            </p>
+
+            <p className="break-words">
+              <span className="font-medium">Address:</span> {address.street},{" "}
+              {address.suite}, {address.city}, {address.zipcode}
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-2xl bg-gray-50 p-5">
-            <p className="text-sm text-gray-500">
-              Posts
-            </p>
+            <p className="text-sm text-gray-500">Posts</p>
 
-            <p className="mt-2 text-3xl font-bold text-gray-900">
-              5+
-            </p>
+            <p className="mt-2 text-3xl font-bold text-gray-900">5+</p>
           </div>
 
           <div className="rounded-2xl bg-green-50 p-5">
-            <p className="text-sm text-green-700">
-              Completed
-            </p>
+            <p className="text-sm text-green-700">Completed</p>
 
             <p className="mt-2 text-3xl font-bold text-green-900">
               {completedTasks}
@@ -58,9 +72,7 @@ export default function UserOverviewCard({
           </div>
 
           <div className="rounded-2xl bg-orange-50 p-5">
-            <p className="text-sm text-orange-700">
-              Pending
-            </p>
+            <p className="text-sm text-orange-700">Pending</p>
 
             <p className="mt-2 text-3xl font-bold text-orange-900">
               {pendingTasks}

@@ -65,9 +65,11 @@ export default async function UserDetailPage({
       <UserOverviewCard
         name={user.name}
         email={user.email}
-        company={user.company.name}
+        username={user.username}
+        company={user.company}
         completedTasks={completedTasks}
         pendingTasks={pendingTasks}
+        address={user.address}
       />
 
       <section className="flex flex-col gap-6 xl:flex-row">
