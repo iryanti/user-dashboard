@@ -29,7 +29,7 @@ describe("UsersList", () => {
 
     render(<UsersList />);
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(document.querySelector(".animate-pulse")).toBeInTheDocument();
   });
 
   it("renders empty state", () => {

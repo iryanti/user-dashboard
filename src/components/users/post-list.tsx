@@ -1,20 +1,11 @@
 "use client";
-
 import { useState } from "react";
-
 import { useQuery } from "@tanstack/react-query";
-
 import { getPostsByUser } from "@/services/user-services";
-
 const POSTS_LIMIT = 5;
-
-type Props = {
-  userId: string;
-};
-
+type Props = { userId: string };
 export default function PostList({ userId }: Props) {
   const [page, setPage] = useState(1);
-
   const {
     data: posts,
     isLoading,
@@ -23,9 +14,7 @@ export default function PostList({ userId }: Props) {
     queryKey: ["posts", userId, page],
     queryFn: () => getPostsByUser(userId, page, POSTS_LIMIT),
   });
-
   const hasNextPage = posts?.length === POSTS_LIMIT;
-
   if (isLoading) {
     return (
       <div className="space-y-3">
@@ -38,11 +27,9 @@ export default function PostList({ userId }: Props) {
       </div>
     );
   }
-
   if (isError || !posts) {
     return <p>Failed to load posts.</p>;
   }
-
   return (
     <div className="space-y-4">
       <div className="space-y-3">
@@ -61,7 +48,6 @@ export default function PostList({ userId }: Props) {
           ))
         )}
       </div>
-
       <div className="flex items-center justify-between">
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -70,9 +56,7 @@ export default function PostList({ userId }: Props) {
         >
           Previous
         </button>
-
         <p className="text-sm text-gray-500">Page {page}</p>
-
         <button
           onClick={() => setPage((prev) => prev + 1)}
           disabled={!hasNextPage}
